@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Itinerary Generator</title>
+</head>
+<body>
+    <h1>Travel Itinerary Planner</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" required>
+        <br>
+        <br>
+        <label for="preferences">Preferences:</label>
+        <textarea name="preferences" id="preferences"></textarea>
+        <br>
+        <br>
+        <button type="submit">Generate Itinerary</button>
+    </form>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if itinerary %}
+    <h2>Generated Itinerary for {{ destination }}</h2>
+    <div>{{ itinerary|safe }}</div>
+    {% endif %}
+
+    {% if local_recommendation %}
+    <h2>Local Recommendations</h2>
+    <ul>
+        {% for place in local_recommendation.results %}
+        <li>{{ place.name }} - {{ place.vicinity }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if weather %}
+    <h2>Weather Forecast for {{ destination }}</h2>
+    <p>Temperature: {{ weather.main.temp }}°C</p>
+    <p>Condition: {{ weather.weather.0.description }}</p>
+    {% endif %}
+</body>
+</html>
