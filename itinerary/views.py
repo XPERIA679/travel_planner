@@ -22,7 +22,7 @@ def itinerary_view(request):
 
         weather = get_weather_forecast(destination)
 
-        return render(request, 'generate.html', {
+        return render(request, 'base.html', {
             'destination': destination,
             'preferences': preferences,
             'itinerary': itinerary_html,
@@ -30,4 +30,4 @@ def itinerary_view(request):
             'weather': weather
         })
 
-    return render(request, 'generate.html')
+    return render(request, 'base.html')

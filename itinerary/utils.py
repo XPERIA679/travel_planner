@@ -1,7 +1,6 @@
 import google.generativeai as gemini
 import os
 
-from Tools.i18n.msgfmt import generate
 from dotenv import load_dotenv
 import requests
 

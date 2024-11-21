@@ -1,0 +1,75 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    <title>Travel Itinerary Generator</title>
+    <style>
+        .itinerary-content ul {
+            @apply list-dics pl-5 space-y2;
+        }
+        .itinerary-content li {
+            @apply text-gray-700 leading-relaxed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen p-4">
+<div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-center mb-6">Travel Itinerary Planner</h1>
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label for="destination" class="block text-sm font-medium text-gray-700">Destination:</label>
+            <input type="text" id="destination" name="destination" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500">
+        </div>
+        <div>
+            <label for="preferences" class="block text-sm font-medium text-gray-700">Preferences:</label>
+            <textarea name="preferences" id="preferences" class="mt-1 block w-full px-4 py-2"></textarea>
+        </div>
+        <div class="text-center">
+            <button type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-blue-500 focus:ring-offset-2">
+                Generate Itinerary
+            </button>
+        </div>
+    </form>
+
+    {% if error %}
+        <p class="mt-4 text-red-500 font-medium">{{ error }}</p>
+    {% endif %}
+
+    {% if itinerary %}
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold text-gray-800">Generated Itinerary for {{ destination }}</h2>
+            <div class="mt-2 p-4 bg-gray-100 border border-gray-200 rounded-md space-y-4 itinerary-content">{{ itinerary|safe }}</div>
+        </div>
+    {% endif %}
+
+    {% if local_recommendation %}
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold text-gray-800">Local Recommendations</h2>
+            <ul class="mt-2 space-y-2 list-disc list-inside">
+                {% for place in local_recommendation.results %}
+                    <li>
+                        <span class="font-medium text-gray-700">{{ place.name }}</span>
+                        <span class="text-gray-500">{{ place.vicinity }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if weather %}
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold text-gray-800">Weather Forecast for {{ destination }}</h2>
+            <p class="mt-2"><span class="font-medium">Temperature:</span> {{ weather.main.temp }}°C</p>
+            <p><span class="font-medium">Condition:</span> {{ weather.weather.0.description }}</p>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>

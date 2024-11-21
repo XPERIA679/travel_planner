@@ -1,0 +1,8 @@
+Django
+django-tailwind[reload]
+django-tailwind
+djangorestframework
+google-generativeai
+markdown
+python-dotenv
+requests
